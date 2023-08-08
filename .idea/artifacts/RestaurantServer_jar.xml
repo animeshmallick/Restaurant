@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RestaurantServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/RestaurantServer_jar</output-path>
+    <root id="archive" name="RestaurantServer.jar">
+      <element id="module-output" name="RestaurantServer" />
+    </root>
+  </artifact>
+</component>
