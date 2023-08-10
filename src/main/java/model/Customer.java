@@ -7,7 +7,7 @@ public class Customer {
     @Getter
     private String NAME;
     @Getter
-    private String PHONE_NUMBER;
+    private int PHONE_NUMBER;
     @Getter
-    private String GUESTS;
+    private int GUESTS;
 }

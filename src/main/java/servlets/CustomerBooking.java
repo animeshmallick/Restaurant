@@ -13,8 +13,10 @@ import java.sql.Connection;
 public class CustomerBooking extends HttpServlet {
     private Connection connection = null;
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        connection = DatabaseConnection.initialiseDatabase(request, response);
+        connection = new DatabaseConnection()
+                .initialiseDatabase(request, response);
         new CustomerBookingHelper(connection, request, response)
                 .confirmBooking();
     }
