@@ -12,4 +12,7 @@ public class SQLQueries {
 
     @Getter
     private final String GET_EXISTING_OTPs = "SELECT `TableID` FROM `bookings`";
+
+    @Getter
+    private final String GET_EXISTING_BOOKING = "SELECT `CustomerID` FROM `bookings`";
 }
