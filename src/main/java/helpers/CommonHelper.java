@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 @UtilityClass
 @Log4j
 public class CommonHelper {
-    private final String path = "webpage/%s.jsp";
+    private final String path = "/%s.jsp";
     public void redirectToErrorPage(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         try {
             String relativePath = String.format(path, "error");
