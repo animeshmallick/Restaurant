@@ -13,6 +13,7 @@ public class CommonHelper {
     public void redirectToErrorPage(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         try {
             String relativePath = String.format(path, "error");
+            request.setAttribute("error", ex);
             request.getRequestDispatcher(relativePath).forward(request,response);
         } catch(Exception exception) {
             //Do nothing as the URL generated will never throw any error
@@ -22,6 +23,7 @@ public class CommonHelper {
     public void redirectToErrorPage(HttpServletRequest request, HttpServletResponse response, String errorMessage) {
         try {
             String relativePath = String.format(path, "error");
+            request.setAttribute("error", errorMessage);
             request.getRequestDispatcher(relativePath).forward(request,response);
         } catch(Exception exception) {
             //Do nothing as the URL generated will never throw any error

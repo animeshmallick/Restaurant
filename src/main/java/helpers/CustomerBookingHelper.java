@@ -59,7 +59,7 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> {
                 CommonHelper.redirectToErrorPage(request, response, e);
             }
         } else {
-            //CommonHelper.redirectToStaticErrorPage(response);
+            CommonHelper.redirectToStaticErrorPage(request, response);
         }
         return (T) this;
     }
