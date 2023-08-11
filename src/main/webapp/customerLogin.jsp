@@ -4,12 +4,12 @@
         function validateform(){
             var tableId = document.loginForm.tableID.value;
 
-            if (tableId == null || tableId == ""){
+            if (tableId == null || tableId === ""){
                 document.getElementById("tableIDSpan").innerHTML="Invalid Table ID.";
                 return false;
             } else { document.getElementById("tableIDSpan").innerHTML=""; }
 
-            if (tableId.length != 6) {
+            if (tableId.length !== 6) {
                 document.getElementById("tableIDSpan").innerHTML="Invalid Table ID.";
                 return false;
             } else { document.getElementById("tableIDSpan").innerHTML="." }

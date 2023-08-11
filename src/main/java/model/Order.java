@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Item {
-    private Product product;
+public class Order {
+    private int productID;
     private int quantity;
+    private int tableID;
 }

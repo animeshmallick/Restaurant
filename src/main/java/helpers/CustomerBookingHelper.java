@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Log4j
 public class CustomerBookingHelper <T extends CustomerBookingHelper> extends BaseHelper {
@@ -23,6 +24,8 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
     private final String phoneNumberIdentifier = "phone";
     private final String guestsIdentifier = "guest";
     private final int MAX_GUEST_ALLOWED = 6;
+    private final String defaultValueForBookingStatus = "booked";
+    private final String defaultValueForBookingComment = "NA";
 
     public CustomerBookingHelper(Connection connection, HttpServletRequest request, HttpServletResponse response) {
         this.connection = connection;
@@ -30,27 +33,27 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
         this.response = response;
 
         String name = request.getParameter(nameIdentifier);
-        int phone = Integer.parseInt(request.getParameter(phoneNumberIdentifier));
+        long phone = Long.parseLong(request.getParameter(phoneNumberIdentifier));
         int guest = Integer.parseInt(request.getParameter(guestsIdentifier));
 
         customer = new Customer(name, phone, guest);
-        log.info("Customer Booking Helper Object is Generated");
+        log.info("Customer Booking Helper Object is Generated.");
     }
 
     public T confirmBooking() {
         if(!isDuplicateBooking()) {
-            log.info("Customer details are valid for Booking.");
+            log.info("Initiating addition of Customer Details to database.");
             try {
                 PreparedStatement statement = connection.prepareStatement(SQLQueries.REGISTER_CUSTOMER());
-                statement.setString(1, Integer.toString(customer.getPHONE_NUMBER()));
+                statement.setString(1, Long.toString(customer.getPHONE_NUMBER()));
                 statement.setString(2, customer.getNAME());
-                statement.setString(3, "NA");
+                statement.setString(3, defaultValueForBookingComment);
                 statement.setString(4, Integer.toString(customer.getGUESTS()));
-                statement.setString(5, "booked");
+                statement.setString(5, defaultValueForBookingStatus);
                 statement.setString(6, generateUniqueTableID());
                 log.debug("Executing : " + statement);
                 statement.executeUpdate();
-                log.info("Booking Details are saved in database.");
+                log.info("Customer Details are saved in database.");
                 statement.close();
                 connection.close();
                 redirectTo(request, response,"bookingConfirmation");
@@ -72,15 +75,15 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_TABLE_ID());
 
-            List<String> existingTableIDList = new ArrayList<String>();
-            newTableID = String.valueOf((int) (100000 + 100000 * Math.random()));
+            List<String> existingTableIDList = new ArrayList<>();
+            newTableID = String.format("%06d", new Random().nextInt(999999));
 
             while (resultSet.next())
                 existingTableIDList.add(resultSet.getString(1));
 
-            while (existingTableIDList.contains(newTableID)) {
-                newTableID = String.valueOf((int) (100000 * Math.random()));
-            }
+            while (existingTableIDList.contains(newTableID))
+                newTableID = String.format("%06d", new Random().nextInt(999999));
+
             log.info("Customer Booking Table ID generated successfully. TableID : " + newTableID);
         } catch(SQLException ex) {
             log.debug("SQL Exception found while generating new Table ID on Customer Booking", ex);
@@ -96,9 +99,9 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_CUSTOMER_ID());
 
-            List<String> existingCustomerIdList = new ArrayList<String>();
+            List<Long> existingCustomerIdList = new ArrayList<>();
             while(resultSet.next())
-                existingCustomerIdList.add(resultSet.getString(1));
+                existingCustomerIdList.add(Long.parseLong(resultSet.getString(1)));
 
             if(existingCustomerIdList.contains(customer.getPHONE_NUMBER())) {
                 log.debug("Duplicate Booking found in database.");

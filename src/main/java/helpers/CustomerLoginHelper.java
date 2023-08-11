@@ -3,6 +3,7 @@ package helpers;
 import data.SQLQueries;
 import lombok.extern.log4j.Log4j;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +38,7 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_TABLE_ID());
 
-            List<String> existingTableID = new ArrayList<String>();
+            List<String> existingTableID = new ArrayList<>();
             while(resultSet.next())
                 existingTableID.add(resultSet.getString(1));
 
@@ -87,14 +88,14 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
         return (T) this;
     }
 
-    public void displayMenu() {
+    public void goToMenu() {
         try {
             log.info("Redirecting to Menu Servlet.");
-            response.sendRedirect("/RestaurantServer/menu");
+            response.sendRedirect("/RestaurantServer/Menu");
         }catch(IOException ex) {redirectToErrorPage(request, response, ex); }
     }
 
     private void deleteExistingCookie() {
-
+        log.info("Deleting cooking implementation not done yet.");
     }
 }

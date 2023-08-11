@@ -7,6 +7,7 @@ import model.Product;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,22 +26,28 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
     private final String menuProductCategoryIdentifier = "ProductCategory";
     private final String menuProductPriceIdentifier = "ProductPrice";
     private final String menuProductRatingIdentifier = "ProductRating";
-    private String tableIdIdentifier = "tableID";
+    private final String tableIdIdentifier = "tableID";
+    private int tableID;
 
     public MenuHelper(Connection connection, HttpServletRequest request, HttpServletResponse response) {
         this.connection = connection;
         this.request = request;
         this.response =  response;
         log.info("Menu Helper Object Created.");
+        this.tableID = getTableID();
+        if(tableID == -1)
+            log.info("Menu requested from a unknown table.");
+        else
+            log.info("Menu requested from TableID : " + tableID);
     }
 
     public T showMenu() {
-        if(isValidTable()) {
+        if(tableID != -1) {
             try {
                 log.info("Executing SQL Query : " + SQLQueries.getSELECT_MENU());
                 ResultSet resultSet = connection.createStatement()
                         .executeQuery(SQLQueries.getSELECT_MENU());
-                List<Product> productList = new ArrayList<Product>();
+                List<Product> productList = new ArrayList<>();
 
                 while (resultSet.next()) {
                     Product product = new Product(
@@ -51,7 +58,7 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
                             resultSet.getString(menuProductCategoryIdentifier),
                             Double.parseDouble(resultSet.getString(menuProductPriceIdentifier)),
                             Integer.parseInt(resultSet.getString(menuProductRatingIdentifier)));
-                    log.info("Product ID : " + product.getProductID() + " fetched.");
+                    log.info("Fetching Product ID : " + product.getProductID());
                     productList.add(product);
                 }
                 request.setAttribute("menu", productList);
@@ -60,16 +67,23 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
                 log.info("Failed to fetch MENU from the menu table in DB.");
                 redirectToErrorPage(request, response, ex);
             }
+        }else {
+            try {
+                response.sendRedirect("/RestaurantServer/customerLogin.jsp");
+            }catch(IOException ex) { redirectToErrorPage(request, response,
+                    "Table ID not verified and still not able to redirect to login page.");}
         }
         return (T) this;
     }
 
-    private boolean isValidTable() {
+    private int getTableID() {
         Cookie[] cookies = request.getCookies();
-        for(Cookie cookie : cookies) {
-            if(cookie.getName().equals(tableIdIdentifier))
-                return true;
+        if(cookies != null){
+            for(Cookie cookie : cookies) {
+                if(cookie.getName().equals(tableIdIdentifier))
+                    return Integer.parseInt(cookie.getValue());
+            }
         }
-        return false;
+        return -1;
     }
 }

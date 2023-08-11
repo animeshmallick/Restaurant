@@ -1,8 +1,8 @@
 <% ArrayList<Product> productList; %>
-<% ArrayList<Item> cartItem; %>
+<% ArrayList<Order> cartItem; %>
 <%@ page contentType="text/html; charset=ISO-8859-1" %>
 <%@ page import="model.Product" %>
-<%@ page import="model.Item" %>
+<%@ page import="model.Order" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>Menu Details</h1>
-    <table>
+    <table id="menuTable">
         <%for(int i=0; i<productList.size(); i++) { %>
             <tr name="MenuRow" id=<%= i %>>
                 <td id="ProductID" hidden="hidden"><%= productList.get(i).getProductID() %></td>
@@ -40,6 +40,8 @@
         <%}%>
     </table>
     <br/><br/><br/>
-    <button type="button" name="Create Cart" onclick="createCart()">Create Order</button>
+    <form name="CreateCart" method="POST">
+
+    </form>
 </body>
 </html>

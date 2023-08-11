@@ -26,7 +26,7 @@ public class CustomerLogin extends HttpServlet {
                 .validateTableID()
                 .addCookie()
                 .updateCustomerEntry()
-                .displayMenu();
+                .goToMenu();
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -35,7 +35,7 @@ public class CustomerLogin extends HttpServlet {
             int tableID = -1;
             if (cookies == null) {
                 log.info("Cookies not found.\nRedirecting to Login Page.");
-                request.getRequestDispatcher("/customerLogin.jsp").forward(request, response);
+                response.sendRedirect("/RestaurantServer/customerLogin.jsp");
             } else {
                 for(Cookie cookie : cookies) {
                     if(cookie.getName().equals(tableIdIdentifier)) {
@@ -46,11 +46,11 @@ public class CustomerLogin extends HttpServlet {
 
             if(tableID == -1) {
                 log.info("TableID Cookie not found.\nRedirecting to Login Page.");
-                request.getRequestDispatcher("/customerLogin.jsp").forward(request, response);
+                response.sendRedirect("/RestaurantServer/customerLogin.jsp");
             }else {
                 log.info("TableID cookie detected.\nTable ID : " + tableID);
                 new CustomerLoginHelper(connection, request, response)
-                        .displayMenu();
+                        .goToMenu();
             }
         }catch(Exception ex) {
             log.info("Something went wrong.\nRedirecting to Login Page.");

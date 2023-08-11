@@ -4,11 +4,11 @@
     </head>
     <script>
         function validateform(){
-            var name=document.bookingForm.name.value;
-            var phone=document.bookingForm.phone.value;
-            var guest=document.bookingForm.guest.value;
+            const name=document.bookingForm.name.value;
+            const phone=document.bookingForm.phone.value;
+            const guest=document.bookingForm.guest.value;
 
-            if (name==null || name==""){
+            if (name==null || name === ""){
                 document.getElementById("nameSpan").innerHTML="Not a valid name.";
                 return false;
             } else { document.getElementById("nameSpan").innerHTML="Valid."; }
