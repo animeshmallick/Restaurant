@@ -9,4 +9,13 @@
     <param-name>log4j-config-location</param-name>
     <param-value>resources/log4j.properties</param-value>
   </context-param>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/Error/4xx.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/Error/5xx.jsp</location>
+  </error-page>
 </web-app>
