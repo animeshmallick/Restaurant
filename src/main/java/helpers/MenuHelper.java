@@ -2,6 +2,7 @@ package helpers;
 
 import data.SQLQueries;
 import lombok.extern.log4j.Log4j;
+import model.MenuWrapper;
 import model.Product;
 
 import javax.servlet.http.Cookie;
@@ -47,7 +48,7 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
                 log.info("Executing SQL Query : " + SQLQueries.getSELECT_MENU());
                 ResultSet resultSet = connection.createStatement()
                         .executeQuery(SQLQueries.getSELECT_MENU());
-                List<Product> productList = new ArrayList<>();
+                ArrayList<Product> productList = new ArrayList<Product>();
 
                 while (resultSet.next()) {
                     Product product = new Product(
@@ -61,7 +62,7 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
                     log.info("Fetching Product ID : " + product.getProductID());
                     productList.add(product);
                 }
-                request.setAttribute("menu", productList);
+                request.setAttribute("menu", new MenuWrapper(productList));
                 redirectTo(request, response, "menu");
             } catch (SQLException ex) {
                 log.info("Failed to fetch MENU from the menu table in DB.");

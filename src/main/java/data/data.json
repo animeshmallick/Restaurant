@@ -1,0 +1,10 @@
+{
+  "DB_DRIVER" : "com.mysql.jdbc.Driver",
+  "hostname" : "localhost",
+  "DB_PORT" : 3306,
+  "DB_NAME" : "restaurant",
+  "DB_USERNAME": "server",
+  "DB_PASSWORD" : "12345",
+  "Bookings_Table_Name" : "bookings",
+  "databaseURLFormat" : "databaseURLFormat"
+}

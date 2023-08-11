@@ -38,7 +38,7 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_TABLE_ID());
 
-            List<String> existingTableID = new ArrayList<>();
+            List<String> existingTableID = new ArrayList<String>();
             while(resultSet.next())
                 existingTableID.add(resultSet.getString(1));
 

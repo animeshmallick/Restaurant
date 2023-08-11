@@ -75,7 +75,7 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_TABLE_ID());
 
-            List<String> existingTableIDList = new ArrayList<>();
+            List<String> existingTableIDList = new ArrayList<String>();
             newTableID = String.format("%06d", new Random().nextInt(999999));
 
             while (resultSet.next())
@@ -99,7 +99,7 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_CUSTOMER_ID());
 
-            List<Long> existingCustomerIdList = new ArrayList<>();
+            List<Long> existingCustomerIdList = new ArrayList<Long>();
             while(resultSet.next())
                 existingCustomerIdList.add(Long.parseLong(resultSet.getString(1)));
 

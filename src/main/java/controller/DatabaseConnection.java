@@ -24,7 +24,10 @@ public class DatabaseConnection extends BaseHelper {
                     Database.getDB_PASSWORD());
             log.info("Connected to Database.");
             return connection;
-        } catch(ClassNotFoundException | SQLException e) {
+        } catch(ClassNotFoundException e) {
+            log.info("Failed to Connect to Database.");
+            redirectToErrorPage(request, response, e);
+        } catch(SQLException e) {
             log.info("Failed to Connect to Database.");
             redirectToErrorPage(request, response, e);
         }
