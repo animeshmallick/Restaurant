@@ -1,6 +1,7 @@
 package helpers;
 
 import data.SQLQueries;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import model.Customer;
 
@@ -27,7 +28,9 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
     private final String defaultValueForBookingStatus = "booked";
     private final String defaultValueForBookingComment = "NA";
 
-    public CustomerBookingHelper(Connection connection, HttpServletRequest request, HttpServletResponse response) {
+    public CustomerBookingHelper(@NonNull Connection connection,
+                                 @NonNull HttpServletRequest request,
+                                 @NonNull HttpServletResponse response) {
         this.connection = connection;
         this.request = request;
         this.response = response;
@@ -40,7 +43,10 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
         log.info("Customer Booking Helper Object is Generated.");
     }
 
-    public T confirmBooking() {
+    /**
+     * Add booking details to DB
+     */
+    public void confirmBooking() {
         if(!isDuplicateBooking()) {
             log.info("Initiating addition of Customer Details to database.");
             try {
@@ -65,9 +71,12 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
             log.debug("Something went wrong. !!\nRedirecting to Static Error Page.");
             redirectToStaticErrorPage(request, response);
         }
-        return (T) this;
     }
 
+    /**
+     * Read existing tableID from DB and create a new tableID and add to the DB.
+     * @return unique tableID.
+     */
     private String generateUniqueTableID() {
         String newTableID = "";
         try {
@@ -92,6 +101,10 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
         return newTableID;
     }
 
+    /**
+     * Read CustomerID/PhoneNo and check if this is duplicate booking
+     * @return DuplicateBooking
+     */
     private boolean isDuplicateBooking() {
         log.info("Validating Duplicate Booking.");
         try {

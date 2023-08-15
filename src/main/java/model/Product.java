@@ -3,6 +3,9 @@ package model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Product Entity
+ */
 @Getter
 @AllArgsConstructor
 public class Product {

@@ -13,18 +13,24 @@ import java.sql.Connection;
 @Log4j
 @WebServlet("/CustomerBooking")
 public class CustomerBooking extends HttpServlet {
-    private Connection connection = null;
-
+    /**
+     * doGet method for CustomerBooking servlet
+     * @param request Servlet Request
+     * @param response Servlet Response
+     */
     @Override
-    protected void doGet(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
-        //Add method to check if the get call is made without params
-        connection = new DatabaseConnection()
+    protected void doGet(@NonNull HttpServletRequest request,
+                         @NonNull HttpServletResponse response) {
+        //TODO: Add method to check if the get call is made without params
+        Connection connection = new DatabaseConnection()
                 .initialiseDatabase(request, response);
         new CustomerBookingHelper(connection, request, response)
                 .confirmBooking();
     }
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(@NonNull HttpServletRequest request,
+                          @NonNull HttpServletResponse response) {
+        //TODO: doPost for CustomerBooking
         log.info("POST request made to CustomerBooking Servlet.");
         doGet(request, response);
     }

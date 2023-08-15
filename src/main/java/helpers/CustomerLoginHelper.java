@@ -1,6 +1,7 @@
 package helpers;
 
 import data.SQLQueries;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletException;
@@ -22,18 +23,25 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
     private String tableIdIdentifier = "tableID";
     private int tableID = -1;
 
-    public CustomerLoginHelper(Connection connection, HttpServletRequest request, HttpServletResponse response) {
+    public CustomerLoginHelper(@NonNull Connection connection,
+                               @NonNull HttpServletRequest request,
+                               @NonNull HttpServletResponse response) {
         this.connection = connection;
         this.request = request;
         this.response = response;
         log.info("Customer Login Helper Object is Generated.");
     }
 
+    public void goToMenu() {
+        try {
+            log.info("Redirecting to Menu Servlet.");
+            response.sendRedirect("/RestaurantServer/Menu");
+        }catch(IOException ex) {redirectToErrorPage(request, response, ex); }
+    }
+
     public T validateTableID() {
         try {
             int tableID = Integer.parseInt(request.getParameter(tableIdIdentifier));
-            log.info("Validating Table ID.");
-
             log.info("Executing SQL Query: " + SQLQueries.getSELECT_TABLE_ID());
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.getSELECT_TABLE_ID());
@@ -86,13 +94,6 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
             redirectToErrorPage(request, response, "Table ID not verified.");
         }
         return (T) this;
-    }
-
-    public void goToMenu() {
-        try {
-            log.info("Redirecting to Menu Servlet.");
-            response.sendRedirect("/RestaurantServer/Menu");
-        }catch(IOException ex) {redirectToErrorPage(request, response, ex); }
     }
 
     private void deleteExistingCookie() {

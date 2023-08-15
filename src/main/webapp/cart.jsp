@@ -9,13 +9,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Menu Table</title>
+    <title>My Cart</title>
     <% orderList = (ArrayList<Order>)request.getAttribute("orders"); %>
     <% menuWrapper = (MenuWrapper)request.getAttribute("menu"); %>
+    <script src="scripts/scripts.js"></script>
 </head>
 <body>
 <h1>Cart Details</h1>
-<table id="menuTable">
+
+<% if(orderList.isEmpty()) { %>
+<h1>Empty Cart. !!</h1>
+<%}%>
+
+<table id="cartTable">
     <%for(int i=0; i<orderList.size(); i++) { %>
     <tr id="Row<%= i %>">
         <td id="ProductID<%= i %>" hidden="hidden"><%= orderList.get(i).getProductID() %></td>
@@ -28,5 +34,8 @@
     </tr>
     <%}%>
 </table>
+<% if(!orderList.isEmpty()) { %>
+    <a href="/RestaurantServer/Orders" onclick="addOrderCookie()">Place Order</a>
+<%}%>
 </body>
 </html>

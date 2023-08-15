@@ -2,6 +2,7 @@ package servlets;
 
 import controller.DatabaseConnection;
 import helpers.CustomerLoginHelper;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.annotation.WebServlet;
@@ -11,15 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 
-
 @Log4j
 @WebServlet("/CustomerLogin")
 public class CustomerLogin extends HttpServlet {
     private Connection connection = null;
-    private String tableIdIdentifier = "tableID";
+    private final String tableIdIdentifier = "tableID";
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    /**
+     * doPost method for CustomerLogin servlet
+     * @param request Servlet Request
+     * @param response Servlet Response
+     */
+    protected void doPost(@NonNull HttpServletRequest request,
+                          @NonNull HttpServletResponse response) {
         connection = new DatabaseConnection()
                 .initialiseDatabase(request, response);
         new CustomerLoginHelper(connection, request, response)
@@ -28,8 +34,14 @@ public class CustomerLogin extends HttpServlet {
                 .updateCustomerEntry()
                 .goToMenu();
     }
+    /**
+     * doGet method for CustomerLogin servlet
+     * @param request Servlet Request
+     * @param response Servlet Response
+     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected void doGet(@NonNull HttpServletRequest request,
+                         @NonNull HttpServletResponse response) {
         try {
             Cookie[] cookies = request.getCookies();
             int tableID = -1;

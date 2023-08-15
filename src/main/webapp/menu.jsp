@@ -9,30 +9,7 @@
     <meta charset="UTF-8">
     <title>Menu Table</title>
     <% productList = ((MenuWrapper)request.getAttribute("menu")).getMenu(); %>
-    <script>
-        function addToCart(i) {
-            let row = i.substring(10);
-            let itemID = document.getElementById("ProductID" + row).innerHTML;
-            let quantity = document.getElementById("ProductQuantityDropdown" + row).value;
-            let cookieName = "order";
-            let cookieValue = itemID.concat("Q").concat(quantity);
-            let oldCookieValue = getExistingOrderCookieValue();
-            let newCookieValue = oldCookieValue.concat("AND").concat(cookieValue);
-            document.cookie = cookieName.concat("=").concat(newCookieValue);
-        }
-
-        function getExistingOrderCookieValue() {
-            let cookie = document.cookie;
-            let firstIndex = cookie.indexOf('order=') + 6;
-            if(firstIndex < 6 || firstIndex > cookie.length)
-                return "";
-            cookie = cookie.substring(firstIndex);
-            let lastIndex = cookie.indexOf(';');
-            if(lastIndex === -1)
-                return cookie;
-            return cookie.substring(0,lastIndex);
-        }
-    </script>
+    <script src="scripts/scripts.js"></script>
     
 </head>
 <body>
@@ -65,5 +42,6 @@
             </tr>
         <%}%>
     </table>
+    <a href="http://localhost:8080/RestaurantServer/Cart">Go To Cart</a>
 </body>
 </html>
