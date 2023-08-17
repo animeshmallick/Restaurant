@@ -4,7 +4,6 @@ import data.SQLQueries;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,9 +41,9 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
     public T validateTableID() {
         try {
             int tableID = Integer.parseInt(request.getParameter(tableIdIdentifier));
-            log.info("Executing SQL Query: " + SQLQueries.getSELECT_TABLE_ID());
+            log.info("Executing SQL Query: " + SQLQueries.SELECT_TABLE_ID());
             ResultSet resultSet = connection.createStatement()
-                    .executeQuery(SQLQueries.getSELECT_TABLE_ID());
+                    .executeQuery(SQLQueries.SELECT_TABLE_ID());
 
             List<String> existingTableID = new ArrayList<String>();
             while(resultSet.next())

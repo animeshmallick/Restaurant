@@ -15,7 +15,6 @@ public class MenuWrapper {
 
     /**
      * Get Product from Menu
-     * @param productID
      * @return Product
      */
     public Product getProductFromMenu(int productID) {

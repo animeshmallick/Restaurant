@@ -38,7 +38,9 @@ public class BaseHelper {
      * @param response
      * @param ex Exception thrown for error.jsp and change the URL
      */
-    protected void redirectToErrorPage(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+    protected void redirectToErrorPage(@NonNull HttpServletRequest request,
+                                       @NonNull HttpServletResponse response,
+                                       @NonNull Exception ex) {
         try {
             String relativePath = String.format(path, "error");
             log.info("Setting Attribute Key:'error' and Value:" + ex);
@@ -109,9 +111,9 @@ public class BaseHelper {
         log.info("Reading Menu from DB.");
         ArrayList<Product> menu = new ArrayList<>();
         try {
-            log.info("Executing SQL Query : " + SQLQueries.getSELECT_MENU());
+            log.info("Executing SQL Query : " + SQLQueries.SELECT_MENU());
             ResultSet resultSet = connection.createStatement()
-                    .executeQuery(SQLQueries.getSELECT_MENU());
+                    .executeQuery(SQLQueries.SELECT_MENU());
 
             while (resultSet.next()) {
                 Product product = new Product(
@@ -153,11 +155,25 @@ public class BaseHelper {
                 String[] temp = order.trim().split("Q");
                 int productID = Integer.parseInt(temp[0]);
                 int quantity = Integer.parseInt(temp[1]);
-                cartList.add(new Order(productID, quantity, "placed"));
+                int index = findExistingProductInCart(cartList, productID);
+                if(index == -1)
+                    cartList.add(new Order(productID, quantity, "placed", 0));
+                else {
+                    int qty = cartList.get(index).getQuantity();
+                    cartList.remove(index);
+                    cartList.add(new Order(productID, (quantity + qty), "placed", 0));
+                }
             }
             return cartList;
         } else { log.info("Order cookies not found. Empty Cart."); }
         return cartList;
+    }
+
+    private int findExistingProductInCart(ArrayList<Order> cartList, int productID) {
+        for(int i=0;i<cartList.size();i++)
+            if(cartList.get(i).getProductID() == productID)
+                return i;
+        return -1;
     }
 
     /**
@@ -202,7 +218,7 @@ public class BaseHelper {
                 liveOrder.add(new Order(
                         Integer.parseInt(resultSet.getString(itemIdIdentifier)),
                         Integer.parseInt(resultSet.getString(quantityIdentifier)),
-                        resultSet.getString(statusIdentifier)));
+                        resultSet.getString(statusIdentifier),0));
                 log.info(resultSet.getString(itemIdIdentifier) + " + " + resultSet.getString(quantityIdentifier));
             }
             return liveOrder;

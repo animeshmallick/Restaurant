@@ -39,7 +39,7 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
         try {
             for(Order order : orders) {
                 log.info("Inserting Orders.");
-                PreparedStatement statement = connection.prepareStatement(SQLQueries.CONFIRM_ORDER());
+                PreparedStatement statement = connection.prepareStatement(SQLQueries.PLACE_ORDER());
                 statement.setString(1, Integer.toString(tableID));
                 statement.setString(2, Integer.toString(order.getProductID()));
                 statement.setString(3, Integer.toString(order.getQuantity()));

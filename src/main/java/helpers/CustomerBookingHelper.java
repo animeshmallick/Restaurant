@@ -80,9 +80,9 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
     private String generateUniqueTableID() {
         String newTableID = "";
         try {
-            log.info("Executing SQL Query : " + SQLQueries.getSELECT_TABLE_ID());
+            log.info("Executing SQL Query : " + SQLQueries.SELECT_TABLE_ID());
             ResultSet resultSet = connection.createStatement()
-                    .executeQuery(SQLQueries.getSELECT_TABLE_ID());
+                    .executeQuery(SQLQueries.SELECT_TABLE_ID());
 
             List<String> existingTableIDList = new ArrayList<String>();
             newTableID = String.format("%06d", new Random().nextInt(999999));
@@ -108,9 +108,9 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
     private boolean isDuplicateBooking() {
         log.info("Validating Duplicate Booking.");
         try {
-            log.info("Executing SQL Query : " + SQLQueries.getSELECT_CUSTOMER_ID());
+            log.info("Executing SQL Query : " + SQLQueries.SELECT_CUSTOMER_ID());
             ResultSet resultSet = connection.createStatement()
-                    .executeQuery(SQLQueries.getSELECT_CUSTOMER_ID());
+                    .executeQuery(SQLQueries.SELECT_CUSTOMER_ID());
 
             List<Long> existingCustomerIdList = new ArrayList<Long>();
             while(resultSet.next())
