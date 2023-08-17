@@ -111,7 +111,6 @@ public class BaseHelper {
         log.info("Reading Menu from DB.");
         ArrayList<Product> menu = new ArrayList<>();
         try {
-            log.info("Executing SQL Query : " + SQLQueries.SELECT_MENU());
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.SELECT_MENU());
 

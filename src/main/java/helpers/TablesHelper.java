@@ -44,8 +44,13 @@ public class TablesHelper <T extends TablesHelper> extends BaseHelper {
             ArrayList<Order> orders = table.getOrders();
             String status = "No Action Required";
             for(Order order : orders) {
-                if(order.getStatus().equals("placed")) {
-                    status = "Action Required";
+                if (order.getStatus().equals("placed")) {
+                    status = "Waiting to Confirm";
+                    break;
+                }
+                if(order.getStatus().equalsIgnoreCase("prepared")) {
+                    status = "Waiting to Deliver";
+                    break;
                 }
             }
             table.setStatus(status);

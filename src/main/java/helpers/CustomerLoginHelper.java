@@ -20,7 +20,7 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
     private HttpServletRequest request;
     private HttpServletResponse response;
     private String tableIdIdentifier = "tableID";
-    private int tableID = -1;
+    private long tableID = -1;
 
     public CustomerLoginHelper(@NonNull Connection connection,
                                @NonNull HttpServletRequest request,
@@ -40,7 +40,7 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
 
     public T validateTableID() {
         try {
-            int tableID = Integer.parseInt(request.getParameter(tableIdIdentifier));
+            long tableID = Long.parseLong(request.getParameter(tableIdIdentifier));
             log.info("Executing SQL Query: " + SQLQueries.SELECT_TABLE_ID());
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.SELECT_TABLE_ID());
@@ -49,7 +49,7 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
             while(resultSet.next())
                 existingTableID.add(resultSet.getString(1));
 
-            if(existingTableID.contains(Integer.toString(tableID))) {
+            if(existingTableID.contains(Long.toString(tableID))) {
                 this.tableID = tableID;
                 log.info("Table ID verified.");
             } else {
@@ -66,7 +66,7 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
     public T addCookie() {
         deleteExistingCookie();
         if(tableID != -1) {
-            Cookie cookie = new Cookie(tableIdIdentifier, Integer.toString(tableID));
+            Cookie cookie = new Cookie(tableIdIdentifier, Long.toString(tableID));
             response.addCookie(cookie);
             log.info("Cookie Saved successfully.\nCookie Details : " + cookie);
         } else {

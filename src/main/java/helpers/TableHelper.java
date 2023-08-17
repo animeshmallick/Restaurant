@@ -56,7 +56,9 @@ public class TableHelper extends BaseHelper {
     private String getTableStatus(ArrayList<Order> tableOrders) {
         for(Order order : tableOrders) {
             if(order.getStatus().equalsIgnoreCase("placed"))
-                return "Action Required";
+                return "Waiting to Confirm";
+            if(order.getStatus().equalsIgnoreCase("prepared"))
+                return "Waiting to Deliver";
         }
         return "No Action Required";
     }

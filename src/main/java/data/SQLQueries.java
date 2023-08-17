@@ -40,6 +40,14 @@ public class SQLQueries {
 
     private final String CONFIRM_ALL_ORDERS = "UPDATE `live_table` SET `ItemOrderStatus`='confirmed' WHERE `TableNumber`='%s' AND `ItemOrderStatus`='placed'";
 
+    private final String SELECT_LIVE_ORDERS_FOR_KITCHEN = "SELECT * FROM live_table WHERE `ItemOrderStatus` IN ('confirmed','preparing')";
+
+    private final String ORDER_PREPARED = "UPDATE `live_table` SET `ItemOrderStatus`='prepared' WHERE `OrderID`='%s'";
+
+    private final String DELIVER_ORDER = "UPDATE `live_table` SET `ItemOrderStatus`='delivered' WHERE `OrderID`='%s'";
+
+    private final String PREPARE_ORDER = "UPDATE `live_table` SET `ItemOrderStatus`='preparing' WHERE `OrderID`='%s'";
+
     public String SELECT_TABLE_ID() {
         log.info("Executing SQL Query : " + SELECT_TABLE_ID);
         return SELECT_TABLE_ID;
@@ -118,5 +126,25 @@ public class SQLQueries {
     public String CONFIRM_ALL_ORDERS(String tableID) {
         log.info("Executing SQL Query : " + String.format(CONFIRM_ALL_ORDERS, tableID));
         return String.format(CONFIRM_ALL_ORDERS, tableID);
+    }
+
+    public String SELECT_LIVE_ORDERS_FOR_KITCHEN() {
+        log.info("Executing SQL Query : " + SELECT_LIVE_ORDERS_FOR_KITCHEN);
+        return SELECT_LIVE_ORDERS_FOR_KITCHEN;
+    }
+
+    public String ORDER_PREPARED(String orderID) {
+        log.info("Executing SQL Query : " + String.format(ORDER_PREPARED, orderID));
+        return String.format(ORDER_PREPARED, orderID);
+    }
+
+    public String DELIVER_ORDER(String orderID) {
+        log.info("Executing SQL Query : " + String.format(DELIVER_ORDER, orderID));
+        return String.format(DELIVER_ORDER, orderID);
+    }
+
+    public String PREPARE_ORDER(String orderID) {
+        log.info("Executing SQL Query : " + String.format(PREPARE_ORDER, orderID));
+        return String.format(PREPARE_ORDER, orderID);
     }
 }
