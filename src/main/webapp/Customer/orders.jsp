@@ -32,5 +32,10 @@
             </tr>
         <%}%>
     </table>
+    <% if(!orderList.isEmpty()) { %>
+        <form action="/Bill" method="post">
+            <
+        </form>
+    <% } %>
 </body>
 </html>

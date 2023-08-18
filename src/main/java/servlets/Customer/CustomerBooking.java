@@ -1,10 +1,9 @@
-package servlets;
+package servlets.Customer;
 
 import controller.DatabaseConnection;
-import helpers.MenuHelper;
+import helpers.Customer.CustomerBookingHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,25 +11,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 
 @Log4j
-@WebServlet("/Menu")
-public class Menu extends HttpServlet {
-    Connection connection;
+@WebServlet(name = "/CustomerBooking", urlPatterns = "/CustomerBooking")
+public class CustomerBooking extends HttpServlet {
     /**
-     * doGet method for Menu servlet
+     * doGet method for CustomerBooking servlet
      * @param request Servlet Request
      * @param response Servlet Response
      */
     @Override
     protected void doGet(@NonNull HttpServletRequest request,
                          @NonNull HttpServletResponse response) {
-        connection = new DatabaseConnection().initialiseDatabase(request, response);
-        new MenuHelper(connection, request, response)
-                .showMenu();
+        //TODO: Add method to check if the get call is made without params
+        Connection connection = new DatabaseConnection()
+                .initialiseDatabase(request, response);
+        new CustomerBookingHelper(connection, request, response)
+                .confirmBooking();
     }
     @Override
     protected void doPost(@NonNull HttpServletRequest request,
                           @NonNull HttpServletResponse response) {
-        //TODO: doPost method for Menu servlet
+        //TODO: doPost for CustomerBooking
+        log.info("POST request made to CustomerBooking Servlet.");
         doGet(request, response);
     }
 }

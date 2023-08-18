@@ -1,6 +1,6 @@
-package servlets.Waiter;
+package servlets.Customer;
 
-import helpers.Waiter.DeleteOrderHelper;
+import helpers.Customer.BillHelper;
 import lombok.NonNull;
 
 import javax.servlet.annotation.WebServlet;
@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "/DeleteOrder", urlPatterns = "/Waiter/DeleteOrder")
-public class DeleteOrder extends HttpServlet {
+@WebServlet(name = "/Bill", urlPatterns = "/Bill")
+public class Bill extends HttpServlet {
     @Override
     protected void doGet(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
-        new DeleteOrderHelper(request, response)
-                .deleteOrder();
+        new BillHelper(request, response)
+                .displayBill();
     }
 }

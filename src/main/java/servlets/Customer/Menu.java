@@ -1,8 +1,9 @@
-package servlets;
+package servlets.Customer;
 
 import controller.DatabaseConnection;
-import helpers.CartHelper;
+import helpers.Customer.MenuHelper;
 import lombok.NonNull;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 
-@WebServlet("/Cart")
-public class Cart extends HttpServlet {
-    private Connection connection;
-
+@Log4j
+@WebServlet(name = "/Menu", urlPatterns = "/Menu")
+public class Menu extends HttpServlet {
+    Connection connection;
     /**
-     * doGet method for Cart servlet
+     * doGet method for Menu servlet
      * @param request Servlet Request
      * @param response Servlet Response
      */
@@ -23,7 +24,13 @@ public class Cart extends HttpServlet {
     protected void doGet(@NonNull HttpServletRequest request,
                          @NonNull HttpServletResponse response) {
         connection = new DatabaseConnection().initialiseDatabase(request, response);
-        new CartHelper(connection, request, response)
-                .displayCart();
+        new MenuHelper(connection, request, response)
+                .showMenu();
+    }
+    @Override
+    protected void doPost(@NonNull HttpServletRequest request,
+                          @NonNull HttpServletResponse response) {
+        //TODO: doPost method for Menu servlet
+        doGet(request, response);
     }
 }

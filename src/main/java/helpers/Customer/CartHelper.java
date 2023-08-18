@@ -1,5 +1,6 @@
-package helpers;
+package helpers.Customer;
 
+import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 
@@ -33,6 +34,6 @@ public class CartHelper<T extends CartHelper> extends BaseHelper {
         request.setAttribute("orders", getCookieValue(request, "cart"));
 
         log.info("Generating Cart.");
-        redirectTo(request, response, "cart");
+        redirectTo(request, response, "Customer/cart");
     }
 }

@@ -1,6 +1,6 @@
 package servlets.Waiter;
 
-import helpers.TablesHelper;
+import helpers.Waiter.TablesHelper;
 import lombok.NonNull;
 
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/Tables")
+@WebServlet(name = "/Tables", urlPatterns = "/Waiter/Tables")
 public class Tables extends HttpServlet {
     @Override
     protected void doGet(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {

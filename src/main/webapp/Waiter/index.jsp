@@ -15,11 +15,8 @@
         <button>New Entry</button>
     </a>
 
-    <a href="/RestaurantServer/Tables">
+    <a href="/RestaurantServer/Waiter/Tables">
         <button>View All Tables</button>
     </a>
-
-
-
 </body>
 </html>

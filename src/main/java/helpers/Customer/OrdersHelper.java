@@ -1,6 +1,7 @@
-package helpers;
+package helpers.Customer;
 
 import data.SQLQueries;
+import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import model.Order;
@@ -18,7 +19,6 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
     private Connection connection;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private final String orderCookieNameIdentifier = "order";
     private final String cartCookieNameIdentifier = "cart";
 
     public OrdersHelper(@NonNull Connection connection,
@@ -34,7 +34,7 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
      * Insert Orders into live_table table in DB
      */
     public void placeOrder() {
-        ArrayList<Order> orders = getCookieValue(request, orderCookieNameIdentifier);
+        ArrayList<Order> orders = getCookieValue(request, cartCookieNameIdentifier);
         int tableID = getTableID(request);
         try {
             for(Order order : orders) {
@@ -47,15 +47,20 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
                 log.info("Executing SQL : " + statement);
                 statement.executeUpdate();
             }
-            request.setAttribute("menu", getMenu(connection, request, response));
-            request.setAttribute("liveOrder", getLiveOrder(connection, request, response, tableID));
-
-            log.info("Redirecting to Orders.jsp");
-            response.addCookie(new Cookie(orderCookieNameIdentifier,""));
             response.addCookie(new Cookie(cartCookieNameIdentifier, ""));
-            redirectTo(request, response, "orders");
+            displayOrder(tableID);
         }catch(SQLException ex){
             redirectToErrorPage(request, response, ex);
         }
+    }
+    public void displayOrder(int tableID) {
+        request.setAttribute("menu", getMenu(connection, request, response));
+        request.setAttribute("liveOrder", getLiveOrder(connection, request, response, tableID));
+
+        log.info("Redirecting to Orders.jsp");
+        redirectTo(request, response, "Customer/orders");
+    }
+    public void displayOrder() {
+        displayOrder(getTableID(request));
     }
 }

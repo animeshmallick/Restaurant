@@ -1,6 +1,7 @@
-package helpers;
+package helpers.Customer;
 
 import data.SQLQueries;
+import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import model.Customer;
@@ -62,7 +63,7 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
                 log.info("Customer Details are saved in database.");
                 statement.close();
                 connection.close();
-                redirectTo(request, response,"bookingConfirmation");
+                redirectTo(request, response,"Customer/bookingConfirmation");
             } catch (SQLException e) {
                 log.info("SQL Exception while saving customer data to database, e");
                 redirectToErrorPage(request, response, e);

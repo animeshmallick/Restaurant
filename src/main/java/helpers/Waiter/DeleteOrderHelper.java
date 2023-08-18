@@ -1,7 +1,8 @@
-package helpers;
+package helpers.Waiter;
 
 import controller.DatabaseConnection;
 import data.SQLQueries;
+import helpers.BaseHelper;
 import lombok.NonNull;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,22 +11,21 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class OrderPreparedHelper extends BaseHelper {
+public class DeleteOrderHelper extends BaseHelper {
     private Connection connection;
     private HttpServletRequest request;
     private HttpServletResponse response;
 
-    public OrderPreparedHelper(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
+    public DeleteOrderHelper(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
         this.request = request;
         this.response = response;
         this.connection = new DatabaseConnection().initialiseDatabase(request, response);
     }
-
-    public void orderPrepared() {
+    public void deleteOrder() {
         String orderID = request.getParameter("orderID");
         try {
-            connection.createStatement().executeUpdate(SQLQueries.ORDER_PREPARED(orderID));
-            response.sendRedirect("/RestaurantServer/KitchenOrders");
+            connection.createStatement().executeUpdate(SQLQueries.DELETE_ORDER(orderID));
+            response.sendRedirect("/RestaurantServer/Waiter/Table?tableNumber=" + request.getParameter("tableNumber"));
         } catch (SQLException | IOException ex) {
             redirectToErrorPage(request, response, ex);
         }

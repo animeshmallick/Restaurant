@@ -1,7 +1,8 @@
-package helpers;
+package helpers.Waiter;
 
 import controller.DatabaseConnection;
 import data.SQLQueries;
+import helpers.BaseHelper;
 import lombok.NonNull;
 import model.Order;
 import model.Table;

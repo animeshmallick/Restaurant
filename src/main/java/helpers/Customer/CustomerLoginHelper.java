@@ -1,6 +1,7 @@
-package helpers;
+package helpers.Customer;
 
 import data.SQLQueries;
+import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 

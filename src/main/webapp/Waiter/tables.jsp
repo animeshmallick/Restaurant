@@ -21,7 +21,7 @@
             <tr>
                 <td><%= tableMapEntry.getKey() %></td>
                 <td><%= tableMapEntry.getValue().getStatus() %></td>
-                <td><a href="/RestaurantServer/Table?tableNumber=<%= tableMapEntry.getKey() %>">View Details</a> </td>
+                <td><a href="/RestaurantServer/Waiter/Table?tableNumber=<%= tableMapEntry.getKey() %>">View Details</a> </td>
             </tr>
         <% } %>
     </table>

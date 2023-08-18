@@ -1,7 +1,7 @@
-package servlets;
+package servlets.Customer;
 
 import controller.DatabaseConnection;
-import helpers.OrdersHelper;
+import helpers.Customer.CartHelper;
 import lombok.NonNull;
 
 import javax.servlet.annotation.WebServlet;
@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 
-@WebServlet("/Orders")
-public class Orders extends HttpServlet {
+@WebServlet(name = "/Cart", urlPatterns = "/Cart")
+public class Cart extends HttpServlet {
     private Connection connection;
+
     /**
-     * doGet method for Orders servlet
+     * doGet method for Cart servlet
      * @param request Servlet Request
      * @param response Servlet Response
      */
     @Override
     protected void doGet(@NonNull HttpServletRequest request,
                          @NonNull HttpServletResponse response) {
-        this.connection = new DatabaseConnection().initialiseDatabase(request, response);
-
-        new OrdersHelper(connection, request, response)
-                .placeOrder();
+        connection = new DatabaseConnection().initialiseDatabase(request, response);
+        new CartHelper(connection, request, response)
+                .displayCart();
     }
 }

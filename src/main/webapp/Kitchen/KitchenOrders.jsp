@@ -24,11 +24,11 @@
                <td><%= menu.getProductFromMenu(order.getProductID()).getProductName() %></td>
                <td><%= order.getQuantity()%></td>
                <%if(order.getStatus().equalsIgnoreCase("preparing")) {%>
-                   <td><a href="/RestaurantServer/OrderPrepared?orderID=<%=order.getOrderID()%>">
+                   <td><a href="/RestaurantServer/Kitchen/OrderPrepared?orderID=<%=order.getOrderID()%>">
                        <button>Order Prepared</button></a></td>
                <% }
                if(order.getStatus().equalsIgnoreCase("confirmed")) {%>
-                    <td><a href="/RestaurantServer/PrepareOrder?orderID=<%=order.getOrderID()%>">
+                    <td><a href="/RestaurantServer/Kitchen/PrepareOrder?orderID=<%=order.getOrderID()%>">
                         <button>Start Preparing</button></a></td>
                <% } %>
            </tr>

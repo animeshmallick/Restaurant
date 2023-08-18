@@ -35,7 +35,10 @@
     <%}%>
 </table>
 <% if(!orderList.isEmpty()) { %>
-    <a href="/RestaurantServer/Orders" onclick="addOrderCookie()">Place Order</a>
+    <form name="placeOrder" method="post" action="/../RestaurantServer/Orders">
+        <input type="submit" name="submit" value="Place order">
+    </form>
 <%}%>
+<a href="/RestaurantServer/Orders">View Orders</a>
 </body>
 </html>

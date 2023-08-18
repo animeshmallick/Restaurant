@@ -24,13 +24,13 @@
                 <td><%= order.getQuantity() %></td>
                 <td><%= order.getStatus() %></td>
                 <% if(order.getStatus().equalsIgnoreCase("placed")) { %>
-                    <td><a href="/RestaurantServer/ConfirmOrder?orderID=<%=order.getOrderID()%>&tableNumber=<%=table.getTableNumber()%>">
+                    <td><a href="/RestaurantServer/Waiter/ConfirmOrder?orderID=<%=order.getOrderID()%>&tableNumber=<%=table.getTableNumber()%>">
                         <button>Confirm Order</button></a></td>
-                    <td><a href="/RestaurantServer/DeleteOrder?orderID=<%=order.getOrderID()%>&tableNumber=<%=table.getTableNumber()%>">
+                    <td><a href="/RestaurantServer/Waiter/DeleteOrder?orderID=<%=order.getOrderID()%>&tableNumber=<%=table.getTableNumber()%>">
                         <button>Delete Order</button></a></td>
                 <% } %>
                 <% if(order.getStatus().equalsIgnoreCase("prepared")) { %>
-                    <td><a href="/RestaurantServer/DeliverOrder?orderID=<%=order.getOrderID()%>&tableNumber=<%=table.getTableNumber()%>">
+                    <td><a href="/RestaurantServer/Waiter/DeliverOrder?orderID=<%=order.getOrderID()%>&tableNumber=<%=table.getTableNumber()%>">
                         <button>Deliver Order</button>
                     </a></td>
                 <% } %>
@@ -38,7 +38,7 @@
         <% } %>
     </table>
     <% if(table.getStatus().equalsIgnoreCase("Waiting to Confirm")) { %>
-        <a href="/RestaurantServer/ConfirmAllOrders?tableNumber=<%= table.getTableNumber() %>&tableID=<%= table.getTableID() %>">
+        <a href="/RestaurantServer/Waiter/ConfirmAllOrders?tableNumber=<%= table.getTableNumber() %>&tableID=<%= table.getTableID() %>">
             <button>Confirm all orders on the table.</button></a>
     <% } %>
 </body>

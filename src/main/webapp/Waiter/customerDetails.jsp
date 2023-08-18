@@ -12,7 +12,7 @@
 </head>
 <body>
 <h1>Customer Details. !!</h1>
-<form name="tableAllotment" action="/../RestaurantServer/TableAllotment" method="POST">
+<form name="tableAllotment" action="/../RestaurantServer/Waiter/TableAllotment" method="POST">
     <h2>Name : <input name="name" value="<%= request.getAttribute("name") %>" readonly></h2>
     <h3>Mobile Number : <input name="phone" value="<%= request.getParameter("phoneNumber") %>" readonly></h3>
     <h3>Guests : <input name="guest" value="<%= request.getAttribute("guest") %>" readonly></h3>

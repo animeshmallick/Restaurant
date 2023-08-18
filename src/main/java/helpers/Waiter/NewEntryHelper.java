@@ -1,13 +1,13 @@
-package helpers;
+package helpers.Waiter;
 
 import controller.DatabaseConnection;
 import data.SQLQueries;
+import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
