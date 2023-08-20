@@ -23,7 +23,7 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
         this.request = request;
         this.response =  response;
         log.info("Menu Helper Object Created.");
-        this.tableID = getTableID(request);
+        this.tableID = getTableIDfromCookie(request);
         if(tableID == -1)
             log.info("Menu requested from a unknown table.");
         else
@@ -35,10 +35,11 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
      */
     public void showMenu() {
         if(tableID != -1) {
-            request.setAttribute("menu", getMenu(connection, request, response));
+            request.setAttribute("table", getTable(connection, request, response, "Menu"));
             redirectTo(request, response, "Customer/menu");
         }else {
             try {
+                log.info("Table ID not found. Redirecting to customerLogin.jsp");
                 response.sendRedirect("/RestaurantServer/customerLogin.jsp");
             }catch(IOException ex) { redirectToErrorPage(request, response,
                     "Table ID not verified and still not able to redirect to login page.");}

@@ -21,6 +21,7 @@ public class TableAllotmentHelper extends BaseHelper {
         this.request = request;
         this.response = response;
         this.connection = new DatabaseConnection().initialiseDatabase(request, response);
+        log.info("Table Allotment Helper object is created/+.");
     }
 
     public void allotTable() {

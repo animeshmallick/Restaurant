@@ -41,8 +41,8 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
 
     public T validateTableID() {
         try {
+            log.info("Validating Table ID.");
             long tableID = Long.parseLong(request.getParameter(tableIdIdentifier));
-            log.info("Executing SQL Query: " + SQLQueries.SELECT_TABLE_ID());
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.SELECT_TABLE_ID());
 
@@ -80,10 +80,8 @@ public class CustomerLoginHelper <T extends CustomerLoginHelper> extends BaseHel
     public T updateCustomerEntry() {
         if(tableID != -1) {
             try {
-                String sql = String.format(SQLQueries.UPDATE_CUSTOMER_STATUS(), tableID);
-                log.info("Executing SQL Query : " + sql);
                 connection.createStatement()
-                        .executeUpdate(sql);
+                        .executeUpdate(SQLQueries.UPDATE_CUSTOMER_STATUS(Long.toString(tableID)));
                 log.info("Updated customer login.\nCustomer Status changed to active.");
             }catch(SQLException ex) {
                 log.info("Failed to update Customer Status in the DB.\n" + ex);

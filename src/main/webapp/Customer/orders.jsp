@@ -6,35 +6,34 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.MenuWrapper" %>
-<%@ page import="model.Order" %>
-<%@ page import="java.util.ArrayList" %>
-<% ArrayList<Order> orderList; %>
-<% MenuWrapper menuWrapper; %>
+<%@ page import="model.Table" %>
+<% Table table; %>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Your Orders !!</title>
-    <% menuWrapper = (MenuWrapper) request.getAttribute("menu"); %>
-    <% orderList= (ArrayList<Order>) request.getAttribute("liveOrder"); %>
+    <% table = (Table) request.getAttribute("table"); %>
 </head>
 <body>
     <table id="orders">
-        <% for(int i=0; i<orderList.size(); i++) { %>
+        <% for(int i=0; i<table.getOrders().size(); i++) { %>
             <tr>
-                <td><%= menuWrapper.getProductFromMenu(orderList.get(i).getProductID()).getProductName() %></td>
-                <td><%= orderList.get(i).getQuantity() %></td>
-                <td><%= menuWrapper.getProductFromMenu(orderList.get(i).getProductID()).getProductPrice() %></td>
-                <td><%= menuWrapper.getProductFromMenu(orderList.get(i).getProductID()).getProductPrice()
-                        *  orderList.get(i).getQuantity() %></td>
-                <td><%= orderList.get(i).getStatus() %></td>
+                <td><%= table.getMenuWrapper().getProductFromMenu(
+                        table.getOrders().get(i).getProductID()).getProductName() %></td>
+                <td><%= table.getOrders().get(i).getQuantity() %></td>
+                <td><%= table.getMenuWrapper().getProductFromMenu(
+                        table.getOrders().get(i).getProductID()).getProductPrice() %></td>
+                <td><%= table.getMenuWrapper().getProductFromMenu(
+                        table.getOrders().get(i).getProductID()).getProductPrice()
+                        *  table.getOrders().get(i).getQuantity() %></td>
+                <td><%= table.getOrders().get(i).getStatus() %></td>
             </tr>
         <%}%>
     </table>
-    <% if(!orderList.isEmpty()) { %>
-        <form action="/Bill" method="post">
-            <
+    <% if(!table.getOrders().isEmpty()) { %>
+        <form action="/RestaurantServer/Bill" method="post">
+            <input type="hidden" name="tableID" value="<%= table.getTableID() %>">
         </form>
     <% } %>
 </body>

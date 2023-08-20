@@ -6,6 +6,7 @@ import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import model.Order;
+import model.Table;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,29 +26,62 @@ public class KitchenOrdersHelper extends BaseHelper {
         this.request = request;
         this.response = response;
         this.connection = new DatabaseConnection().initialiseDatabase(request, response);
+        log.info("Kitchen Order Helper object is generated.");
     }
 
     public void viewAllOrders() {
-        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<Table> tables = new ArrayList<>();
         try {
+            log.info("Finding live orders for Kitchen.");
             ResultSet resultSet = connection.createStatement().executeQuery(SQLQueries.SELECT_LIVE_ORDERS_FOR_KITCHEN());
             while(resultSet.next()) {
-                orders.add(new Order(
-                        Integer.parseInt(resultSet.getString(3)),
-                        Integer.parseInt(resultSet.getString(4)),
-                        resultSet.getString(5),
-                        Integer.parseInt(resultSet.getString(1))
-                ));
+                int tableID = resultSet.getInt(2);
+
+                int index = findExistingOrderFromTables(tables,tableID);
+                if(index == -1) {
+                    ArrayList<Order> orders = new ArrayList<>();
+                    orders.add(
+                            new Order(
+                                    resultSet.getInt(3),
+                                    resultSet.getInt(4),
+                                    resultSet.getString(5),
+                                    resultSet.getInt(1)
+                            ));
+                    tables.add(new Table(
+                            tableID,
+                            getTableNumberFromTableID(connection, request, response, tableID),
+                            null,
+                            orders,
+                            getMenu(connection, request, response),
+                            "kitchen"
+                            ));
+                } else {
+                    Table table = tables.get(index);
+                    table.getOrders().add(new Order(
+                            resultSet.getInt(3),
+                            resultSet.getInt(4),
+                            resultSet.getString(5),
+                            resultSet.getInt(1)
+                    ));
+                    tables.remove(index);
+                    tables.add(table);
+                }
             }
-            sortOrderList(orders);
-            request.setAttribute("orders", orders);
-            request.setAttribute("menu", getMenu(connection, request, response));
+            sortOrderList(tables);
+            request.setAttribute("tables", tables);
             redirectTo(request, response, "Kitchen/KitchenOrders");
         } catch (SQLException ex) {
             redirectToErrorPage(request, response, ex);
         }
     }
-    private void sortOrderList(ArrayList<Order> orders) {
-        orders.sort(Comparator.comparingInt(Order::getProductID));
+    private void sortOrderList(ArrayList<Table> tables) {
+        tables.sort(Comparator.comparingInt(Table::getTableNumber));
+    }
+
+    private int findExistingOrderFromTables(ArrayList<Table> tables, int tableID) {
+        for(int i=0;i<tables.size();i++)
+            if(tables.get(i).getTableID() == tableID)
+                return i;
+        return -1;
     }
 }

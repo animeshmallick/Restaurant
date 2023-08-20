@@ -1,40 +1,38 @@
-<% MenuWrapper menuWrapper; %>
-<% ArrayList<Order> orderList; %>
 <%@ page contentType="text/html; charset=ISO-8859-1" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="model.Order" %>
-<%@ page import="model.MenuWrapper" %>
+<%@ page import="model.Table" %>
+<% Table table; %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>My Cart</title>
-    <% orderList = (ArrayList<Order>)request.getAttribute("orders"); %>
-    <% menuWrapper = (MenuWrapper)request.getAttribute("menu"); %>
+    <% table = (Table)request.getAttribute("table"); %>
     <script src="scripts/scripts.js"></script>
 </head>
 <body>
 <h1>Cart Details</h1>
 
-<% if(orderList.isEmpty()) { %>
+<% if(table.getCart().isEmpty()) { %>
 <h1>Empty Cart. !!</h1>
 <%}%>
 
 <table id="cartTable">
-    <%for(int i=0; i<orderList.size(); i++) { %>
+    <%for(int i=0; i<table.getCart().size(); i++) { %>
     <tr id="Row<%= i %>">
-        <td id="ProductID<%= i %>" hidden="hidden"><%= orderList.get(i).getProductID() %></td>
-        <td id="ProductName<%= i %>"><%= menuWrapper.getProductFromMenu(orderList.get(i).getProductID()).getProductName() %></td>
-        <td id="ProductPrice<%= i %>"><%= menuWrapper.getProductFromMenu(orderList.get(i).getProductID()).getProductPrice() %></td>
-        <td id="ProductQuantity<%= i %>"><%= orderList.get(i).getQuantity() %></td>
-        <td id="ProductAmount<%= i %>"><%= menuWrapper
-                .getProductFromMenu(orderList.get(i).getProductID())
-                .getProductPrice() *  orderList.get(i).getQuantity() %></td>
+        <td id="ProductID<%= i %>" hidden="hidden"><%= table.getCart().get(i).getProductID() %></td>
+        <td id="ProductName<%= i %>"><%= table.getMenuWrapper().getProductFromMenu(
+                table.getCart().get(i).getProductID()).getProductName() %></td>
+        <td id="ProductPrice<%= i %>"><%= table.getMenuWrapper().getProductFromMenu(
+                table.getCart().get(i).getProductID()).getProductPrice() %></td>
+        <td id="ProductQuantity<%= i %>"><%= table.getCart().get(i).getQuantity() %></td>
+        <td id="ProductAmount<%= i %>"><%= table.getMenuWrapper()
+                .getProductFromMenu(table.getCart().get(i).getProductID())
+                .getProductPrice() *  table.getCart().get(i).getQuantity() %></td>
     </tr>
     <%}%>
 </table>
-<% if(!orderList.isEmpty()) { %>
+<% if(!table.getCart().isEmpty()) { %>
     <form name="placeOrder" method="post" action="/../RestaurantServer/Orders">
         <input type="submit" name="submit" value="Place order">
     </form>

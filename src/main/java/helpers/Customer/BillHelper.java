@@ -22,7 +22,7 @@ public class BillHelper extends BaseHelper {
     }
 
     public void displayBill() {
-        ArrayList<Order> allOrders = getLiveOrder(connection, request, response, getTableID(request));
+        ArrayList<Order> allOrders = getLiveOrder(connection, request, response, getTableIDfromCookie(request));
 
     }
 }

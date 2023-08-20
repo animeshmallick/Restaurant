@@ -22,11 +22,12 @@ public class NewEntryHelper <T extends NewEntryHelper> extends BaseHelper {
         this.request = request;
         this.response = response;
         this.connection = new DatabaseConnection().initialiseDatabase(request, response);
+        log.info("New Entry helper object is created/");
     }
     public void validateEntry() {
         try {
             long phoneNumber = Long.parseLong(request.getParameter("phoneNumber"));
-            log.info("Searching for customer details in DB.");
+            log.info("Searching for customer details in DB from NewEntry Servlet");
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.SELECT_CUSTOMER(phoneNumber));
             log.info("SQL QUERY : " + SQLQueries.SELECT_CUSTOMER(phoneNumber));

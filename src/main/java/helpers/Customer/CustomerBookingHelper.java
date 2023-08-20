@@ -80,8 +80,8 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
      */
     private String generateUniqueTableID() {
         String newTableID = "";
+        log.info("Generating new and unique TableID.");
         try {
-            log.info("Executing SQL Query : " + SQLQueries.SELECT_TABLE_ID());
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.SELECT_TABLE_ID());
 
@@ -109,7 +109,6 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
     private boolean isDuplicateBooking() {
         log.info("Validating Duplicate Booking.");
         try {
-            log.info("Executing SQL Query : " + SQLQueries.SELECT_CUSTOMER_ID());
             ResultSet resultSet = connection.createStatement()
                     .executeQuery(SQLQueries.SELECT_CUSTOMER_ID());
 

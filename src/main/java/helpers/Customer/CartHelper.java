@@ -27,12 +27,7 @@ public class CartHelper<T extends CartHelper> extends BaseHelper {
      * Add menu and orders attribute and redirect to cart.jsp
      */
     public void displayCart() {
-        log.info("Reading Menu from CartHelper.");
-        request.setAttribute("menu", getMenu(connection, request, response));
-
-        log.info("Reading Order from Cookies.");
-        request.setAttribute("orders", getCookieValue(request, "cart"));
-
+        request.setAttribute("table", getTable(connection, request, response, "cart"));
         log.info("Generating Cart.");
         redirectTo(request, response, "Customer/cart");
     }

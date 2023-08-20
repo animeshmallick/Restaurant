@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j;
 import model.MenuWrapper;
 import model.Order;
 import model.Product;
+import model.Table;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ public class BaseHelper {
     private final String itemIdIdentifier = "ItemID";
     private final String quantityIdentifier = "ItemQuantity";
     private final String statusIdentifier = "ItemOrderStatus";
+    private final String cartCookieName = "cart";
 
     /**
      * Redirect To error.jsp and display the exception
@@ -123,7 +125,6 @@ public class BaseHelper {
                         resultSet.getString(menuProductCategoryIdentifier),
                         Double.parseDouble(resultSet.getString(menuProductPriceIdentifier)),
                         Integer.parseInt(resultSet.getString(menuProductRatingIdentifier)));
-                log.info("Fetching Product ID : " + product.getProductID());
                 menu.add(product);
             }
             return new MenuWrapper(menu);
@@ -138,10 +139,10 @@ public class BaseHelper {
      * Create Order object (Order{ProductID, Quantity})
      * @return return list of Order objects.
      */
-    public ArrayList<Order> getCookieValue(@NonNull HttpServletRequest request,
-                                           @NonNull String cookieName) {
+    public ArrayList<Order> getCartFromCookie(@NonNull HttpServletRequest request) {
+        log.info("Reading Cookie : " + cartCookieName + " -> and creating orders from cart.");
         ArrayList<Order> cartList = new ArrayList<>();
-        String cookieValue= getCookieValueAsString(request, cookieName);
+        String cookieValue= getCookieValueAsString(request, cartCookieName);
         if(cookieValue != null) {
             //Split order line items
             String[] orderArrayString = Objects.requireNonNull(cookieValue.split("AND"));
@@ -158,9 +159,8 @@ public class BaseHelper {
                 if(index == -1)
                     cartList.add(new Order(productID, quantity, "placed", 0));
                 else {
-                    int qty = cartList.get(index).getQuantity();
                     cartList.remove(index);
-                    cartList.add(new Order(productID, (quantity + qty), "placed", 0));
+                    cartList.add(new Order(productID, quantity, "placed", 0));
                 }
             }
             return cartList;
@@ -181,6 +181,7 @@ public class BaseHelper {
      */
     private String getCookieValueAsString(@NonNull HttpServletRequest request,
                                           @NonNull String cookieName) {
+        log.info("Reading cookie : " + cookieName);
         Cookie[] cookies = request.getCookies();
         for(Cookie cookie : cookies) {
             if(cookie.getName().equals(cookieName)) {
@@ -195,7 +196,8 @@ public class BaseHelper {
      * Read tableID cookie from request
      * @return tableID cookie value
      */
-    public int getTableID(@NonNull HttpServletRequest request) {
+    public int getTableIDfromCookie(@NonNull HttpServletRequest request) {
+        log.info("Reading tableID cookie.");
         Cookie[] cookies = request.getCookies();
         if(cookies != null){
             for(Cookie cookie : cookies) {
@@ -206,10 +208,43 @@ public class BaseHelper {
         return -1;
     }
 
+    public int getTableIDFromTableNumber(@NonNull Connection connection,
+                              @NonNull HttpServletRequest request,
+                              @NonNull HttpServletResponse response,
+                              int tableNumber) {
+        try {
+            log.info("Finding table ID from tableNumber.");
+            ResultSet resultSet = connection.createStatement()
+                    .executeQuery(SQLQueries.GET_TABLE_ID(Integer.toString(tableNumber)));
+            if(resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException ex) {
+            redirectToErrorPage(request, response, ex);
+        }
+        return -1;
+    }
+
+    public int getTableNumberFromTableID(@NonNull Connection connection,
+                                            @NonNull HttpServletRequest request,
+                                            @NonNull HttpServletResponse response,
+                                            int tableID) {
+        try {
+            log.info("Finding tableNumber from tableID");
+            ResultSet resultSet = connection.createStatement()
+                    .executeQuery(SQLQueries.GET_TABLE_NUMBER(Integer.toString(tableID)));
+            if(resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException ex) {
+            redirectToErrorPage(request, response, ex);
+        }
+        return -1;
+    }
+
     public ArrayList<Order> getLiveOrder(@NonNull Connection connection,
                                          @NonNull HttpServletRequest request,
                                          @NonNull HttpServletResponse response,
                                          @NonNull int tableID) {
+        log.info("Fetching live orders from tableID : " + tableID);
         try {
             ArrayList<Order> liveOrder = new ArrayList<>();
             ResultSet resultSet = connection.createStatement().executeQuery(SQLQueries.getLIVE_ORDER(tableID));
@@ -225,5 +260,18 @@ public class BaseHelper {
             redirectToErrorPage(request, response, exception);
             return null;
         }
+    }
+
+    public Table getTable(@NonNull Connection connection,
+                          @NonNull HttpServletRequest request,
+                          @NonNull HttpServletResponse response,
+                          String tableStatus) {
+        int tableID = getTableIDfromCookie(request);
+        return new Table(tableID,
+                getTableIDFromTableNumber(connection, request, response, tableID),
+                getCartFromCookie(request),
+                getLiveOrder(connection, request, response, tableID),
+                getMenu(connection, request, response),
+                tableStatus);
     }
 }

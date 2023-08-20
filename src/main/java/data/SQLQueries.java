@@ -32,6 +32,8 @@ public class SQLQueries {
 
     private final String GET_TABLE_ID = "SELECT Table_Otp FROM `otp_table` WHERE `Table_Number`='%s' LIMIT 1";
 
+    private final String GET_TABLE_NUMBER ="SELECT Table_Number FROM `otp_table` WHERE `Table_Otp`='%s' LIMIT 1";
+
     private final String GET_ORDERS_FROM_LIVE_TABLE = "SELECT * FROM `live_table` WHERE `TableNumber`='%s'";
 
     private final String CONFIRM_ORDER = "UPDATE `live_table` SET `ItemOrderStatus`='confirmed' WHERE `OrderID`='%s'";
@@ -40,7 +42,7 @@ public class SQLQueries {
 
     private final String CONFIRM_ALL_ORDERS = "UPDATE `live_table` SET `ItemOrderStatus`='confirmed' WHERE `TableNumber`='%s' AND `ItemOrderStatus`='placed'";
 
-    private final String SELECT_LIVE_ORDERS_FOR_KITCHEN = "SELECT * FROM live_table WHERE `ItemOrderStatus` IN ('confirmed','preparing')";
+    private final String SELECT_LIVE_ORDERS_FOR_KITCHEN = "SELECT * FROM live_table WHERE `ItemOrderStatus` IN ('confirmed','preparing','prepared')";
 
     private final String ORDER_PREPARED = "UPDATE `live_table` SET `ItemOrderStatus`='prepared' WHERE `OrderID`='%s'";
 
@@ -68,9 +70,9 @@ public class SQLQueries {
         return REGISTER_CUSTOMER;
     }
 
-    public String UPDATE_CUSTOMER_STATUS() {
-        log.info("Executing SQL Query : " + UPDATE_CUSTOMER_STATUS);
-        return UPDATE_CUSTOMER_STATUS;
+    public String UPDATE_CUSTOMER_STATUS(String tableID) {
+        log.info("Executing SQL Query : " + String.format(UPDATE_CUSTOMER_STATUS,tableID));
+        return String.format(UPDATE_CUSTOMER_STATUS,tableID);
     }
 
     public String PLACE_ORDER() {
@@ -106,6 +108,11 @@ public class SQLQueries {
     public String GET_TABLE_ID(String tableNumber) {
         log.info("Executing SQL Query : " + String.format(GET_TABLE_ID, tableNumber));
         return String.format(GET_TABLE_ID, tableNumber);
+    }
+
+    public String GET_TABLE_NUMBER(String tableID) {
+        log.info("Executing SQL Query : " + String.format(GET_TABLE_NUMBER, tableID));
+        return String.format(GET_TABLE_NUMBER, tableID);
     }
 
     public String GET_ORDERS_FROM_LIVE_TABLE(String tableID) {

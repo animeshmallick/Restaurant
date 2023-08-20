@@ -4,6 +4,7 @@ import controller.DatabaseConnection;
 import data.SQLQueries;
 import helpers.BaseHelper;
 import lombok.NonNull;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Log4j
 public class OrderPreparedHelper extends BaseHelper {
     private Connection connection;
     private HttpServletRequest request;
@@ -20,12 +22,15 @@ public class OrderPreparedHelper extends BaseHelper {
         this.request = request;
         this.response = response;
         this.connection = new DatabaseConnection().initialiseDatabase(request, response);
+        log.info("Order Prepared Helper object is generated.");
     }
 
     public void orderPrepared() {
         String orderID = request.getParameter("orderID");
         try {
+            log.info("Food Preparation Complete for Order ID : " + orderID);
             connection.createStatement().executeUpdate(SQLQueries.ORDER_PREPARED(orderID));
+            log.info("Redirecting to KitchenOrders servlet.");
             response.sendRedirect("/RestaurantServer/Kitchen/KitchenOrders");
         } catch (SQLException | IOException ex) {
             redirectToErrorPage(request, response, ex);

@@ -30,6 +30,7 @@ public class Orders extends HttpServlet {
     protected void doPost(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
         this.connection = new DatabaseConnection().initialiseDatabase(request, response);
         new OrdersHelper(connection, request, response)
-                .placeOrder();
+                .placeOrder()
+                .displayOrder();
     }
 }

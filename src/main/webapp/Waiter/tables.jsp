@@ -1,7 +1,7 @@
 <%@ page import="model.TableMap" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="model.Table" %>
-<% Map<String, Table> tables; %>
+<% Map<Integer, Table> tables; %>
 <%--
   Created by IntelliJ IDEA.
   User: anime
@@ -17,7 +17,7 @@
 <body>
     <% tables = ((TableMap) request.getAttribute("tables")).getTableMap(); %>
     <table id="tablesTable">
-        <% for(Map.Entry<String, Table> tableMapEntry : tables.entrySet()) { %>
+        <% for(Map.Entry<Integer, Table> tableMapEntry : tables.entrySet()) { %>
             <tr>
                 <td><%= tableMapEntry.getKey() %></td>
                 <td><%= tableMapEntry.getValue().getStatus() %></td>

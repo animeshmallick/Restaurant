@@ -9,13 +9,13 @@ import java.util.Map;
 
 @Getter
 public class TableMap {
-    private Map<String, Table> tableMap;
+    private Map<Integer, Table> tableMap;
 
     public TableMap() {
         tableMap = new HashMap<>();
     }
 
-    public void addOrder(String tableNumber, Order order, String tableID, MenuWrapper menuWrapper) {
+    public void addOrder(int tableNumber, Order order, int tableID, MenuWrapper menuWrapper) {
         if(tableMap.containsKey(tableNumber)) {
             Table table = tableMap.get(tableNumber);
             table.getOrders().add(order);
@@ -23,14 +23,16 @@ public class TableMap {
         } else {
             ArrayList<Order> orders = new ArrayList<>();
             orders.add(order);
-            Table table = new Table(Integer.parseInt(tableID),
-                   Integer.parseInt(tableNumber),
-                   orders,
+            Table table = new Table(
+                    tableID,
+                   tableNumber,
+                   null,
+                    orders,
                    menuWrapper,
                    "Order Placed");
             tableMap.put(tableNumber, table);
         }
     }
 
-    public void addTable(String tableNumber, Table table) { tableMap.put(tableNumber, table); }
+    public void addTable(int tableNumber, Table table) { tableMap.put(tableNumber, table); }
 }

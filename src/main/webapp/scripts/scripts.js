@@ -75,8 +75,3 @@ function getCartCookieValue() {
         return cookie;
     return cookie.substring(0,lastIndex);
 }
-
-function addOrderCookie() {
-    let orderCookie = getCartCookieValue();
-    document.cookie = "order=".concat(orderCookie);
-}

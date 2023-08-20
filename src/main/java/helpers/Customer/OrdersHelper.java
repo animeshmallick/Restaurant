@@ -5,6 +5,7 @@ import helpers.BaseHelper;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import model.Order;
+import model.Table;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +34,10 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
     /**
      * Insert Orders into live_table table in DB
      */
-    public void placeOrder() {
-        ArrayList<Order> orders = getCookieValue(request, cartCookieNameIdentifier);
-        int tableID = getTableID(request);
+    public T placeOrder() {
+        ArrayList<Order> orders = getCartFromCookie(request);
+        int tableID = getTableIDfromCookie(request);
+        log.info("Placing order for TableID : " + tableID);
         try {
             for(Order order : orders) {
                 log.info("Inserting Orders.");
@@ -48,19 +50,13 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
                 statement.executeUpdate();
             }
             response.addCookie(new Cookie(cartCookieNameIdentifier, ""));
-            displayOrder(tableID);
         }catch(SQLException ex){
             redirectToErrorPage(request, response, ex);
         }
-    }
-    public void displayOrder(int tableID) {
-        request.setAttribute("menu", getMenu(connection, request, response));
-        request.setAttribute("liveOrder", getLiveOrder(connection, request, response, tableID));
-
-        log.info("Redirecting to Orders.jsp");
-        redirectTo(request, response, "Customer/orders");
+        return (T) this;
     }
     public void displayOrder() {
-        displayOrder(getTableID(request));
+        request.setAttribute("table", getTable(connection, request, response, "Orders"));
+        redirectTo(request, response, "Customer/orders");
     }
 }
