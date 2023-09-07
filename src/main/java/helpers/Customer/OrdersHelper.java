@@ -57,6 +57,6 @@ public class OrdersHelper <T extends OrdersHelper> extends BaseHelper {
     }
     public void displayOrder() {
         request.setAttribute("table", getTable(connection, request, response, "Orders"));
-        redirectTo(request, response, "Customer/orders");
+        redirectTo(request, response, "Customer/webpage/orders");
     }
 }

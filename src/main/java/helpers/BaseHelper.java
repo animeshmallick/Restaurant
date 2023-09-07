@@ -3,10 +3,7 @@ package helpers;
 import data.SQLQueries;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
-import model.MenuWrapper;
-import model.Order;
-import model.Product;
-import model.Table;
+import model.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -243,7 +240,7 @@ public class BaseHelper {
     public ArrayList<Order> getLiveOrder(@NonNull Connection connection,
                                          @NonNull HttpServletRequest request,
                                          @NonNull HttpServletResponse response,
-                                         @NonNull int tableID) {
+                                         int tableID) {
         log.info("Fetching live orders from tableID : " + tableID);
         try {
             ArrayList<Order> liveOrder = new ArrayList<>();
@@ -269,9 +266,33 @@ public class BaseHelper {
         int tableID = getTableIDfromCookie(request);
         return new Table(tableID,
                 getTableIDFromTableNumber(connection, request, response, tableID),
+                getCustomer(connection, request, response, tableID),
                 getCartFromCookie(request),
                 getLiveOrder(connection, request, response, tableID),
                 getMenu(connection, request, response),
                 tableStatus);
+    }
+
+    public Customer getCustomer(@NonNull Connection connection,
+                                @NonNull HttpServletRequest request,
+                                @NonNull HttpServletResponse response,
+                                int tableID) {
+        try {
+            ResultSet resultSet = connection.createStatement()
+                    .executeQuery(SQLQueries.GET_CUSTOMER(Integer.toString(tableID)));
+            if(resultSet.next())
+                return new Customer(resultSet.getInt(1),
+                        resultSet.getLong(2),
+                        resultSet.getDate(3),
+                        resultSet.getString(4),
+                        resultSet.getLong(2),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getInt(7),
+                        resultSet.getString(8));
+        } catch (SQLException ex) {
+            redirectToErrorPage(request, response, ex);
+        }
+        return null;
     }
 }

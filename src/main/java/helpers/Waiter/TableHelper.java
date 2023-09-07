@@ -37,6 +37,7 @@ public class TableHelper extends BaseHelper {
         String tableStatus = getTableStatus(tableOrder);
         return new Table(tableID,
                 Integer.parseInt(tableNumber),
+                getCustomer(connection, request, response, tableID),
                 null,
                 tableOrder,
                 getMenu(connection, request, response),

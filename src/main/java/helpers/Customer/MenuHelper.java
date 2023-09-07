@@ -36,7 +36,7 @@ public class MenuHelper <T extends MenuHelper> extends BaseHelper {
     public void showMenu() {
         if(tableID != -1) {
             request.setAttribute("table", getTable(connection, request, response, "Menu"));
-            redirectTo(request, response, "Customer/menu");
+            redirectTo(request, response, "Customer/webpage/menu");
         }else {
             try {
                 log.info("Table ID not found. Redirecting to customerLogin.jsp");

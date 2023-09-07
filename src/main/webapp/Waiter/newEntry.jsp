@@ -11,7 +11,7 @@
     <title>New Customer Entry</title>
 </head>
 <body>
-    <form name="newCustomerEntryForm" action="/../RestaurantServer/Waiter/NewEntry" method="GET">
+    <form name="newCustomerEntryForm" action="<%=request.getContextPath()%>/Waiter/NewEntry" method="GET">
         Phone Number : <input type="text" name="phoneNumber"><br/>
         <input type="submit" value="Find Customer">
     </form>

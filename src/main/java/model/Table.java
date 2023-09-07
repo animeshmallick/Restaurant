@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Table {
     private int tableID;
     private int tableNumber;
+    private Customer customer;
     private ArrayList<Order> cart;
     private ArrayList<Order> orders;
     private MenuWrapper menuWrapper;

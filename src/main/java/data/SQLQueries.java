@@ -50,6 +50,8 @@ public class SQLQueries {
 
     private final String PREPARE_ORDER = "UPDATE `live_table` SET `ItemOrderStatus`='preparing' WHERE `OrderID`='%s'";
 
+    private final String GET_CUSTOMER = "SELECT * FROM `bookings` WHERE `TableID`='%s' LIMIT 1";
+
     public String SELECT_TABLE_ID() {
         log.info("Executing SQL Query : " + SELECT_TABLE_ID);
         return SELECT_TABLE_ID;
@@ -153,5 +155,10 @@ public class SQLQueries {
     public String PREPARE_ORDER(String orderID) {
         log.info("Executing SQL Query : " + String.format(PREPARE_ORDER, orderID));
         return String.format(PREPARE_ORDER, orderID);
+    }
+
+    public String GET_CUSTOMER(String tableID) {
+        log.info("Executing SQL Query : " + String.format(GET_CUSTOMER, tableID));
+        return String.format(GET_CUSTOMER, tableID);
     }
 }

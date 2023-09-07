@@ -10,7 +10,7 @@
     <h2>Phone Number : <%= request.getParameter("phone")%></h2>
     <h2>Expected Guest : <%= request.getParameter("guest")%></h2>
     <br/><br/>
-    <a href="/RestaurantServer/Customer/customerLogin.jsp">
+    <a href="<%=request.getContextPath()%>/Customer/webpage/customerLogin.jsp">
         <button>Login Now.</button>
     </a>
 </body>

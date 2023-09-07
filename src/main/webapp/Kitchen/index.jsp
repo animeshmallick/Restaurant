@@ -11,7 +11,7 @@
     <title>Kitchen Homepage</title>
 </head>
 <body>
-    <a href="/RestaurantServer/Kitchen/KitchenOrders">
+    <a href="<%=request.getContextPath()%>/Kitchen/KitchenOrders">
         <button>View Orders</button>
     </a>
 </body>

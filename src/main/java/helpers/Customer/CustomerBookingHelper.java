@@ -8,6 +8,7 @@ import model.Customer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,7 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
     private final String nameIdentifier = "name";
     private final String phoneNumberIdentifier = "phone";
     private final String guestsIdentifier = "guest";
+    private final String commentIdentifier = "comment";
     private final int MAX_GUEST_ALLOWED = 6;
     private final String defaultValueForBookingStatus = "booked";
     private final String defaultValueForBookingComment = "NA";
@@ -39,8 +41,18 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
         String name = request.getParameter(nameIdentifier);
         long phone = Long.parseLong(request.getParameter(phoneNumberIdentifier));
         int guest = Integer.parseInt(request.getParameter(guestsIdentifier));
+        String comment = request.getParameter(commentIdentifier);
 
-        customer = new Customer(name, phone, guest);
+        customer = new Customer(
+                -1,
+                phone,
+                null,
+                name,
+                phone,
+                comment,
+                guest,
+                Integer.parseInt(generateUniqueTableID()),
+                "booked");
         log.info("Customer Booking Helper Object is Generated.");
     }
 
@@ -54,16 +66,16 @@ public class CustomerBookingHelper <T extends CustomerBookingHelper> extends Bas
                 PreparedStatement statement = connection.prepareStatement(SQLQueries.REGISTER_CUSTOMER());
                 statement.setString(1, Long.toString(customer.getPHONE_NUMBER()));
                 statement.setString(2, customer.getNAME());
-                statement.setString(3, defaultValueForBookingComment);
+                statement.setString(3, customer.getCOMMENT());
                 statement.setString(4, Integer.toString(customer.getGUESTS()));
-                statement.setString(5, defaultValueForBookingStatus);
-                statement.setString(6, generateUniqueTableID());
+                statement.setString(5, customer.getSTATUS());
+                statement.setString(6, Integer.toString(customer.getTABLE_ID()));
                 log.debug("Executing : " + statement);
                 statement.executeUpdate();
                 log.info("Customer Details are saved in database.");
                 statement.close();
                 connection.close();
-                redirectTo(request, response,"Customer/bookingConfirmation");
+                redirectTo(request, response,"Customer/webpage/bookingConfirmation");
             } catch (SQLException e) {
                 log.info("SQL Exception while saving customer data to database, e");
                 redirectToErrorPage(request, response, e);

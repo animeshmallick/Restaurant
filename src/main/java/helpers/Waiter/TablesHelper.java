@@ -105,7 +105,8 @@ public class TablesHelper <T extends TablesHelper> extends BaseHelper {
                             Integer.parseInt(itemQuantity),
                             itemOrderStatus,
                             Integer.parseInt(orderID));
-                    tableMap.addOrder(tableNumber, order, tableID, menuWrapper);
+                    tableMap.addOrder(tableNumber, order, tableID, menuWrapper,
+                            getCustomer(connection, request, response, tableID));
                 }
             }
             return tableMap;

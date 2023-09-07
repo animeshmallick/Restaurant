@@ -29,6 +29,6 @@ public class CartHelper<T extends CartHelper> extends BaseHelper {
     public void displayCart() {
         request.setAttribute("table", getTable(connection, request, response, "cart"));
         log.info("Generating Cart.");
-        redirectTo(request, response, "Customer/cart");
+        redirectTo(request, response, "Customer/webpage/cart");
     }
 }

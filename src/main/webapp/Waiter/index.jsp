@@ -11,11 +11,11 @@
     <title>Waiter HomePage</title>
 </head>
 <body>
-    <a href="/RestaurantServer/Waiter/newEntry.jsp">
+    <a href="<%=request.getContextPath()%>/Waiter/newEntry.jsp">
         <button>New Entry</button>
     </a>
 
-    <a href="/RestaurantServer/Waiter/Tables">
+    <a href="<%=request.getContextPath()%>/Waiter/Tables">
         <button>View All Tables</button>
     </a>
 </body>

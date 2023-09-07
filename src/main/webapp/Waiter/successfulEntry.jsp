@@ -11,11 +11,11 @@
     <title>Successful Entry</title>
 </head>
 <body>
-    <h1>Name : <%= request.getParameter("name")%></h1>
-    <h1>CustomerID : <%= request.getParameter("customerID")%></h1>
-    <h1>Table ID : <%= request.getParameter("tableID")%></h1>
-    <h1>Table Number : <%= request.getParameter("tableNumber")%></h1>
+    <h1 id="name">Name : <%= request.getParameter("name")%></h1>
+    <h1 id="customerID">CustomerID : <%= request.getParameter("customerID")%></h1>
+    <h1 id="tableID">Table ID : <%= request.getParameter("tableID")%></h1>
+    <h1 id="tableNumber">Table Number : <%= request.getParameter("tableNumber")%></h1>
     <br/><br/><br/><br/><br/>
-    <h1><a href="/RestaurantServer/Waiter"><button>Go Home</button></a></h1>
+    <h1><a href="<%=request.getContextPath()%>/Waiter"><button>Go Home</button></a></h1>
 </body>
 </html>

@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "/Bill", urlPatterns = "/Bill")
 public class Bill extends HttpServlet {
     @Override
+    protected void doPost(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
+        new BillHelper(request, response)
+                .generateBill()
+                .displayBill();
+    }
+    @Override
     protected void doGet(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
         new BillHelper(request, response)
                 .displayBill();

@@ -51,6 +51,7 @@ public class KitchenOrdersHelper extends BaseHelper {
                             tableID,
                             getTableNumberFromTableID(connection, request, response, tableID),
                             null,
+                            null,
                             orders,
                             getMenu(connection, request, response),
                             "kitchen"

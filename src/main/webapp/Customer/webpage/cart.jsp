@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>My Cart</title>
     <% table = (Table)request.getAttribute("table"); %>
-    <script src="scripts/scripts.js"></script>
+    <script src="<%=request.getContextPath()%>/main/webapp/Scripts/scripts.js"></script>
 </head>
 <body>
 <h1>Cart Details</h1>
@@ -33,10 +33,10 @@
     <%}%>
 </table>
 <% if(!table.getCart().isEmpty()) { %>
-    <form name="placeOrder" method="post" action="/../RestaurantServer/Orders">
+    <form name="placeOrder" method="post" action="<%=request.getContextPath()%>/Orders">
         <input type="submit" name="submit" value="Place order">
     </form>
 <%}%>
-<a href="/RestaurantServer/Orders">View Orders</a>
+<a href="<%=request.getContextPath()%>/Orders">View Orders</a>
 </body>
 </html>

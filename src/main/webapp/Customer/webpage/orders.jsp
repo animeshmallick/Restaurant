@@ -31,10 +31,15 @@
             </tr>
         <%}%>
     </table>
+    <br/><br/><br/><br/>
     <% if(!table.getOrders().isEmpty()) { %>
-        <form action="/RestaurantServer/Bill" method="post">
+        <form action="<%=request.getContextPath()%>/Bill" method="post">
             <input type="hidden" name="tableID" value="<%= table.getTableID() %>">
+            <input type="submit" value="Generate Bill">
         </form>
     <% } %>
+    <a href="<%= request.getContextPath()%>/Menu" id="goToMenu">
+        <button>Go To Menu</button>
+    </a>
 </body>
 </html>

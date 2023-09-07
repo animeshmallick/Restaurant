@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class TableMap {
+public class TableMap extends BaseHelper{
     private Map<Integer, Table> tableMap;
 
     public TableMap() {
         tableMap = new HashMap<>();
     }
 
-    public void addOrder(int tableNumber, Order order, int tableID, MenuWrapper menuWrapper) {
+    public void addOrder(int tableNumber, Order order, int tableID, MenuWrapper menuWrapper, Customer customer) {
         if(tableMap.containsKey(tableNumber)) {
             Table table = tableMap.get(tableNumber);
             table.getOrders().add(order);
@@ -26,6 +26,7 @@ public class TableMap {
             Table table = new Table(
                     tableID,
                    tableNumber,
+                   customer,
                    null,
                     orders,
                    menuWrapper,

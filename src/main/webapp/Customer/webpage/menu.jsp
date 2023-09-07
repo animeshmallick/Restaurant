@@ -7,7 +7,29 @@
     <meta charset="UTF-8">
     <title>Menu Table</title>
     <% table = ((Table)request.getAttribute("table")); %>
-    <script src="scripts/scripts.js"></script>
+    <script>
+        function addToCart(i) {
+            let row = i.substring(10);
+            let itemID = document.getElementById("ProductID" + row).innerHTML;
+            let quantity = document.getElementById("ProductQuantityDropdown" + row).value;
+            let cookieName = "cart";
+            let cookieValue = itemID.concat("Q").concat(quantity);
+            let oldCookieValue = getCartCookieValue();
+            let newCookieValue = oldCookieValue.concat("AND").concat(cookieValue);
+            document.cookie = cookieName.concat("=").concat(newCookieValue);
+        }
+        function getCartCookieValue() {
+            let cookie = document.cookie;
+            let firstIndex = cookie.indexOf('cart=') + 5;
+            if(firstIndex < 5 || firstIndex > cookie.length)
+                return "";
+            cookie = cookie.substring(firstIndex);
+            let lastIndex = cookie.indexOf(';');
+            if(lastIndex === -1)
+                return cookie;
+            return cookie.substring(0,lastIndex);
+        }
+    </script>
     
 </head>
 <body>
@@ -40,6 +62,6 @@
             </tr>
         <%}%>
     </table>
-    <a href="http://localhost:8080/RestaurantServer/Cart">Go To Cart</a>
+    <a href="<%=request.getContextPath()%>/Cart">Go To Cart</a>
 </body>
 </html>
